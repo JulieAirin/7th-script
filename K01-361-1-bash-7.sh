@@ -1,5 +1,5 @@
 #!/bin/bash
-2> stderr
+2> stderr #Нужно ли?
 echo "Программа поиска пользователей"
 echo "С помощью данной программы вы можете произвести определить принадлежность пользователя группам по его имени."
 echo ""
@@ -23,8 +23,8 @@ until [[ -s us_ex || "$cont" = "n" ]]; do
 done
 if [ ! "$cont" = "n" ]; then
 	>group_list; >group_main;
-	cut -d: -f1,4 /etc/group | grep $us_name | cut -d: -f1 >group_list
-	group_main_num=$(cut -d: -f1,4 /etc/passwd | grep $us_name | cut -d: -f2) #Запись в переменную
+	cut -d: -f1,4 /etc/group | grep :$us_name | cut -d: -f1 >group_list
+	group_main_num=$(cut -d: -f1,4 /etc/passwd | grep ^$us_name | cut -d: -f2) #Запись в переменную
 	touch group_main_num_grep
 	group_main_num_grep=':'${group_main_num}
 	cut -d: -f1,3 /etc/group | grep $group_main_num_grep | cut -d: -f1 >group_main
