@@ -19,11 +19,12 @@ until [[ -s us_ex || "$cont" = "n" ]]; do
 		read cont
 		if [ "$cont" = "n" ]; then 
 			echo "...завершается..."
+			rm us_ex
 			exit 250
 		fi
 	fi
 done
->group_list; >group_main; >group_main_num_grep;  #Обнуляем/создаём файлы (далее для сравнения нужны именно переменные, а не файлы)
+>group_list; >group_main;  #Обнуляем/создаём файлы (далее для сравнения нужны именно переменные, а не файлы)
 us_name_grep=':'${us_name} #Модифицируем для поиска
 cut -d: -f1,4 /etc/group | grep $us_name_grep | cut -d: -f1 >group_list #Получаем список всех групп для нашего пользователя
 group_main_num=$(cut -d: -f1,4 /etc/passwd | grep ^$us_name | cut -d: -f2) #Вытаскиваем номер основной группы
@@ -38,3 +39,4 @@ if [  -s group_list ]; then
 else 
 	echo "Пользователь состоит только в одной группе."
 fi		
+rm group_list group_main us_ex
